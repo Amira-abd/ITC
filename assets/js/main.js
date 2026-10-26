@@ -357,9 +357,16 @@ document.querySelectorAll('.reveal').forEach(el => revealObs.observe(el));
 
 /* ===== Timeline progress fill ===== */
 const timeline = document.getElementById('timeline');
-const tlObs = new IntersectionObserver(entries => {
-  entries.forEach(e => {
-    if (e.isIntersecting) { timeline.classList.add('inview'); tlObs.unobserve(timeline); }
-  });
-}, { threshold: .2 });
-tlObs.observe(timeline);
+
+if (timeline) {
+    const tlObs = new IntersectionObserver(entries => {
+        entries.forEach(e => {
+            if (e.isIntersecting) {
+                timeline.classList.add('inview');
+                tlObs.unobserve(timeline);
+            }
+        });
+    }, { threshold: 0.2 });
+
+    tlObs.observe(timeline);
+}

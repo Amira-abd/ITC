@@ -272,21 +272,46 @@ if (firstFaq) firstFaq.style.maxHeight = firstFaq.scrollHeight + 'px';
 const progressBar = document.getElementById('scroll-progress');
 const header = document.getElementById('siteHeader');
 const toTop = document.getElementById('toTop');
-window.addEventListener('scroll', () => {
-  const h = document.documentElement;
-  const pct = h.scrollTop / (h.scrollHeight - h.clientHeight) * 100;
-  progressBar.style.width = pct + '%';
-  header.classList.toggle('scrolled', h.scrollTop > 10);
-  toTop.classList.toggle('show', h.scrollTop > 600);
-}, { passive: true });
-toTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
 
+window.addEventListener('scroll', () => {
+    const h = document.documentElement;
+    const scrollableHeight = h.scrollHeight - h.clientHeight;
+    const pct = scrollableHeight > 0
+        ? (h.scrollTop / scrollableHeight) * 100
+        : 0;
+
+    if (progressBar) {
+        progressBar.style.width = pct + '%';
+    }
+
+    if (header) {
+        header.classList.toggle('scrolled', h.scrollTop > 10);
+    }
+
+    if (toTop) {
+        toTop.classList.toggle('show', h.scrollTop > 600);
+    }
+}, { passive: true });
+
+if (toTop) {
+    toTop.addEventListener('click', () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+}
 /* ===== Mobile menu ===== */
 const navToggle = document.getElementById('navToggle');
-navToggle.addEventListener('click', () => document.body.classList.toggle('menu-open'));
-document.querySelectorAll('.mobile-menu a').forEach(a =>
-  a.addEventListener('click', () => document.body.classList.remove('menu-open'))
-);
+
+if (navToggle) {
+    navToggle.addEventListener('click', () => {
+        document.body.classList.toggle('menu-open');
+    });
+}
+
+document.querySelectorAll('.mobile-menu a').forEach(a => {
+    a.addEventListener('click', () => {
+        document.body.classList.remove('menu-open');
+    });
+});
 
 /* ===== Scrollspy for nav links ===== */
 const spyLinks = document.querySelectorAll('[data-spy]');
